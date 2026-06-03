@@ -1,0 +1,12 @@
+---
+title: "Rules"
+---
+
+## Scoring
+
+- Exact score: **5 points**
+- Correct goal difference: **3 points**
+- Correct outcome only: **2 points**
+- Wrong outcome: **0 points**
+
+Predictions must be submitted before kickoff.

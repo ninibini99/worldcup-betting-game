@@ -1,0 +1,34 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Family World Cup Betting Game"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: leaderboard.qmd
+        text: Leaderboard
+      - href: matches.qmd
+        text: Matches
+      - href: predictions.qmd
+        text: All Predictions
+      - href: previous-guesses.qmd
+        text: Previous Guesses
+      - href: rules.qmd
+        text: Rules
+  page-footer:
+    left: "Built with Quarto"
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    page-layout: full
+    code-fold: true
+    css: styles.css
+execute:
+  echo: false
+  warning: false
+  message: false

@@ -1,0 +1,23 @@
+---
+title: "Leaderboard"
+---
+
+```{r}
+source("R/load_data.R")
+source("R/scoring.R")
+results <- load_results()
+predictions <- load_predictions()
+scores <- score_predictions(predictions, results)
+leaderboard <- build_leaderboard(scores)
+```
+
+```{r}
+reactable::reactable(
+  leaderboard,
+  searchable = TRUE,
+  filterable = TRUE,
+  defaultPageSize = 20,
+  bordered = TRUE,
+  striped = TRUE
+)
+```

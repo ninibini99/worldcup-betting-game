@@ -1,0 +1,13 @@
+match_id,group,stage,home_code,away_code,home_team_de,away_team_de,home_team_en,away_team_en,date
+A1,A,Group,MEX,RSA,Mexiko,Südafrika,Mexico,South Africa,2026-06-11
+A2,A,Group,KOR,CZE,Südkorea,Tschechien,South Korea,Czechia,2026-06-12
+A3,A,Group,MEX,KOR,Mexiko,Südkorea,Mexico,South Korea,2026-06-16
+A4,A,Group,RSA,CZE,Südafrika,Tschechien,South Africa,Czechia,2026-06-17
+B1,B,Group,CAN,BIH,Kanada,Bosnien und Herzegowina,Canada,Bosnia and Herzegovina,2026-06-12
+B2,B,Group,QAT,SUI,Katar,Schweiz,Qatar,Switzerland,2026-06-13
+B3,B,Group,CAN,QAT,Kanada,Katar,Canada,Qatar,2026-06-17
+B4,B,Group,BIH,SUI,Bosnien und Herzegowina,Schweiz,Bosnia and Herzegovina,Switzerland,2026-06-18
+C1,C,Group,BRA,MAR,Brasilien,Marokko,Brazil,Morocco,2026-06-13
+C2,C,Group,HAI,SCO,Haiti,Schottland,Haiti,Scotland,2026-06-14
+D1,D,Group,USA,PAR,USA,Paraguay,United States,Paraguay,2026-06-14
+D2,D,Group,AUS,TUR,Australien,Türkei,Australia,Türkiye,2026-06-15

@@ -1,0 +1,78 @@
+---
+title: "World Cup Betting Game"
+---
+
+```{r}
+source("R/load_data.R")
+source("R/scoring.R")
+source("R/dashboard.R")
+
+fixtures <- load_fixtures()
+results <- load_results()
+predictions <- load_predictions()
+scores <- score_predictions(predictions, results)
+leaderboard <- build_leaderboard(scores)
+todays_guesses <- current_day_guesses(predictions, fixtures, results)
+```
+
+::: {.hero}
+# 🏆 Family World Cup Betting Game
+
+Today’s predictions, the live leaderboard, and the full points race in one place.
+:::
+
+## Today's guesses
+
+```{r}
+if (nrow(todays_guesses) == 0) {
+  htmltools::tags$p("No matches with predictions for today yet.")
+} else {
+  reactable::reactable(
+    todays_guesses,
+    searchable = TRUE,
+    filterable = TRUE,
+    defaultPageSize = 12,
+    bordered = TRUE,
+    striped = TRUE,
+    columns = list(
+      group = reactable::colDef(name = "Group", maxWidth = 90),
+      match_id = reactable::colDef(name = "Game", maxWidth = 90),
+      match = reactable::colDef(name = "Match"),
+      player = reactable::colDef(name = "Player"),
+      prediction = reactable::colDef(name = "Guess", maxWidth = 90),
+      status = reactable::colDef(name = "Status"),
+      actual_score = reactable::colDef(name = "Result", maxWidth = 90),
+      submitted_at = reactable::colDef(name = "Submitted")
+    )
+  )
+}
+```
+
+## Leaderboard
+
+```{r}
+reactable::reactable(
+  leaderboard,
+  searchable = TRUE,
+  defaultPageSize = 10,
+  bordered = TRUE,
+  striped = TRUE,
+  highlight = TRUE,
+  columns = list(
+    rank = reactable::colDef(name = "Rank", maxWidth = 80),
+    player = reactable::colDef(name = "Player"),
+    points = reactable::colDef(name = "Points", maxWidth = 100),
+    exact_scores = reactable::colDef(name = "Exact scores"),
+    correct_outcomes = reactable::colDef(name = "Correct outcomes"),
+    matches_scored = reactable::colDef(name = "Scored matches")
+  )
+)
+```
+
+## Points race over time
+
+Use the dropdown to switch between all groups and a single group. Click player names in the legend to show or hide players.
+
+```{r}
+points_race_plot(scores, fixtures)
+```
