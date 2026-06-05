@@ -1,0 +1,20 @@
+---
+title: "Predictions"
+---
+
+```{r}
+source("R/load_data.R")
+predictions <- load_predictions()
+fixtures <- load_fixtures()
+prediction_view <- dplyr::left_join(predictions, fixtures, by = "match_id")
+```
+
+```{r}
+reactable::reactable(
+  prediction_view,
+  searchable = TRUE,
+  filterable = TRUE,
+  defaultPageSize = 20,
+  bordered = TRUE
+)
+```

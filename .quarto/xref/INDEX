@@ -1,0 +1,20 @@
+{
+  "rules.qmd": {
+    "rules.html": "e57420be"
+  },
+  "index.qmd": {
+    "index.html": "eb58b210"
+  },
+  "leaderboard.qmd": {
+    "leaderboard.html": "d8dc9743"
+  },
+  "previous-guesses.qmd": {
+    "previous-guesses.html": "3feb5638"
+  },
+  "matches.qmd": {
+    "matches.html": "dcb7ce4e"
+  },
+  "predictions.qmd": {
+    "predictions.html": "6dd8bcd8"
+  }
+}

@@ -1,0 +1,44 @@
+---
+title: "Previous guesses"
+---
+
+```{r}
+source("R/load_data.R")
+source("R/scoring.R")
+source("R/dashboard.R")
+
+fixtures <- load_fixtures()
+results <- load_results()
+predictions <- load_predictions()
+scores <- score_predictions(predictions, results)
+prev <- previous_guesses(predictions, fixtures, results, scores)
+```
+
+This page shows predictions for matches that are already finished or in the past.
+
+```{r}
+if (nrow(prev) == 0) {
+  htmltools::tags$p("No previous guesses yet.")
+} else {
+  reactable::reactable(
+    prev,
+    searchable = TRUE,
+    filterable = TRUE,
+    defaultPageSize = 25,
+    bordered = TRUE,
+    striped = TRUE,
+    columns = list(
+      match_date = reactable::colDef(name = "Date"),
+      group = reactable::colDef(name = "Group", maxWidth = 90),
+      match_id = reactable::colDef(name = "Game", maxWidth = 90),
+      match = reactable::colDef(name = "Match"),
+      player = reactable::colDef(name = "Player"),
+      prediction = reactable::colDef(name = "Guess", maxWidth = 90),
+      actual_score = reactable::colDef(name = "Result", maxWidth = 90),
+      points = reactable::colDef(name = "Points", maxWidth = 90),
+      reason = reactable::colDef(name = "Reason"),
+      submitted_at = reactable::colDef(name = "Submitted")
+    )
+  )
+}
+```

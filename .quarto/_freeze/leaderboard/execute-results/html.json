@@ -1,0 +1,19 @@
+{
+  "hash": "ea562c7a3c42c6396792ac99dd09c51c",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Leaderboard\"\n---\n\n\n::: {.cell}\n\n:::\n\n\n\n::: {.cell}\n::: {.cell-output-display}\n\n```{=html}\n<div class=\"reactable html-widget html-fill-item\" id=\"htmlwidget-37ce9680c8193076a8a7\" style=\"width:auto;height:auto;\"></div>\n<script type=\"application/json\" data-for=\"htmlwidget-37ce9680c8193076a8a7\">{\"x\":{\"tag\":{\"name\":\"Reactable\",\"attribs\":{\"data\":{\"rank\":[1,2,3,4],\"player\":[\"Anna\",\"Stefan\",\"Nina\",\"Max\"],\"points\":[37,30,19,17],\"exact_scores\":[6,4,0,1],\"correct_outcomes\":[9,8,8,7],\"matches_scored\":[11,11,11,11]},\"columns\":[{\"id\":\"rank\",\"name\":\"rank\",\"type\":\"numeric\"},{\"id\":\"player\",\"name\":\"player\",\"type\":\"character\"},{\"id\":\"points\",\"name\":\"points\",\"type\":\"numeric\"},{\"id\":\"exact_scores\",\"name\":\"exact_scores\",\"type\":\"numeric\"},{\"id\":\"correct_outcomes\",\"name\":\"correct_outcomes\",\"type\":\"numeric\"},{\"id\":\"matches_scored\",\"name\":\"matches_scored\",\"type\":\"numeric\"}],\"filterable\":true,\"searchable\":true,\"defaultPageSize\":20,\"bordered\":true,\"striped\":true,\"dataKey\":\"bf8426f1706f9c7fb242bc368e5c6454\"},\"children\":[]},\"class\":\"reactR_markup\"},\"evals\":[],\"jsHooks\":[]}</script>\n```\n\n:::\n:::\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {
+      "include-in-header": [
+        "<script src=\"site_libs/core-js-2.5.3/shim.min.js\"></script>\n<script src=\"site_libs/react-18.2.0/react.min.js\"></script>\n<script src=\"site_libs/react-18.2.0/react-dom.min.js\"></script>\n<script src=\"site_libs/reactwidget-2.0.0/react-tools.js\"></script>\n<link href=\"site_libs/htmltools-fill-0.5.8.1/fill.css\" rel=\"stylesheet\" />\n<script src=\"site_libs/htmlwidgets-1.6.4/htmlwidgets.js\"></script>\n<link href=\"site_libs/reactable-0.4.4/reactable.css\" rel=\"stylesheet\" />\n<script src=\"site_libs/reactable-binding-0.4.4/reactable.js\"></script>\n"
+      ]
+    },
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

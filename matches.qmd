@@ -1,0 +1,29 @@
+---
+title: "Matches"
+---
+
+```{r}
+source("R/load_data.R")
+fixtures <- load_fixtures()
+results <- load_results()
+matches <- dplyr::left_join(fixtures, results, by = "match_id")
+```
+
+```{r}
+reactable::reactable(
+  matches,
+  searchable = TRUE,
+  filterable = TRUE,
+  defaultPageSize = 20,
+  bordered = TRUE,
+  columns = list(
+    match_id = reactable::colDef(name = "Match"),
+    group = reactable::colDef(name = "Group"),
+    home_team_de = reactable::colDef(name = "Home"),
+    away_team_de = reactable::colDef(name = "Away"),
+    home_goals = reactable::colDef(name = "Home goals"),
+    away_goals = reactable::colDef(name = "Away goals"),
+    status = reactable::colDef(name = "Status")
+  )
+)
+```
