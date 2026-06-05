@@ -22,9 +22,9 @@ score_predictions <- function(predictions, results) {
       correct_diff = pred_diff == actual_diff,
       correct_outcome = pred_outcome == actual_outcome,
       points = case_when(
-        exact_score ~ 5L,
-        correct_diff ~ 3L,
-        correct_outcome ~ 2L,
+        exact_score ~ 3L,
+        correct_diff ~ 2L,
+        correct_outcome ~ 1L,
         TRUE ~ 0L
       ),
       reason = case_when(

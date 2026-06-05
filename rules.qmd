@@ -2,11 +2,18 @@
 title: "Rules"
 ---
 
-## Scoring
+## Scoring rules — Round 1 / Group stage
 
-- Exact score: **5 points**
-- Correct goal difference: **3 points**
-- Correct outcome only: **2 points**
-- Wrong outcome: **0 points**
+| Prediction result | Points |
+|---|---:|
+| Exact score | 3 |
+| Correct goal difference | 2 |
+| Correct winner / correct outcome | 1 |
+| Wrong outcome | 0 |
 
-Predictions must be submitted before kickoff.
+Examples:
+
+- Prediction: 2–1, actual result: 2–1 → 3 points
+- Prediction: 2–1, actual result: 3–2 → 2 points
+- Prediction: 1–0, actual result: 2–0 → 1 point
+- Prediction: 2–0, actual result: 1–1 → 0 points

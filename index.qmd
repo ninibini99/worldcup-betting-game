@@ -1,5 +1,5 @@
 ---
-title: "World Cup Betting Game"
+title: "Familie Zumbrunn WM Tippspiel"
 ---
 
 ```{r}
@@ -16,9 +16,17 @@ todays_guesses <- current_day_guesses(predictions, fixtures, results)
 ```
 
 ::: {.hero}
-# 🏆 Family World Cup Betting Game
+::: {.wc-hero}
+#Chum bring en hei!
 
-Today’s predictions, the live leaderboard, and the full points race in one place.
+<a class="badge-football" href="#todays-guesses">⚽ Tipps</a>
+<a class="badge-football" href="#leaderboard">🏆 Leaderboard</a>
+<a class="badge-football" href="#points-race-over-time">📈 Points Race</a>
+
+<div class="subtitle">
+Und die grosse Frage: holt sich Nina auch hier den Titel?
+</div>
+:::
 :::
 
 ## Today's guesses

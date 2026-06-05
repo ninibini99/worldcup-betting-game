@@ -1,51 +1,51 @@
 [
   {
+    "objectID": "rules.html",
+    "href": "rules.html",
+    "title": "Rules",
+    "section": "",
+    "text": "Prediction result\nPoints\n\n\n\n\nExact score\n3\n\n\nCorrect goal difference\n2\n\n\nCorrect winner / correct outcome\n1\n\n\nWrong outcome\n0\n\n\n\nExamples:\n\nPrediction: 2–1, actual result: 2–1 → 3 points\nPrediction: 2–1, actual result: 3–2 → 2 points\nPrediction: 1–0, actual result: 2–0 → 1 point\nPrediction: 2–0, actual result: 1–1 → 0 points"
+  },
+  {
+    "objectID": "rules.html#scoring-rules-round-1-group-stage",
+    "href": "rules.html#scoring-rules-round-1-group-stage",
+    "title": "Rules",
+    "section": "",
+    "text": "Prediction result\nPoints\n\n\n\n\nExact score\n3\n\n\nCorrect goal difference\n2\n\n\nCorrect winner / correct outcome\n1\n\n\nWrong outcome\n0\n\n\n\nExamples:\n\nPrediction: 2–1, actual result: 2–1 → 3 points\nPrediction: 2–1, actual result: 3–2 → 2 points\nPrediction: 1–0, actual result: 2–0 → 1 point\nPrediction: 2–0, actual result: 1–1 → 0 points"
+  },
+  {
     "objectID": "previous-guesses.html",
     "href": "previous-guesses.html",
     "title": "Previous guesses",
     "section": "",
-    "text": "This page shows predictions for matches that are already finished or in the past."
+    "text": "This page shows predictions for matches that are already finished or in the past.\n\n\nNo previous guesses yet."
   },
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "World Cup Betting Game",
+    "title": "Familie Zumbrunn WM Tippspiel",
     "section": "",
-    "text": "Today’s predictions, the live leaderboard, and the full points race in one place."
+    "text": "#Chum bring en hei!\n⚽ Tipps 🏆 Leaderboard 📈 Points Race\n\nUnd die grosse Frage: holt sich Nina auch hier den Titel?"
   },
   {
     "objectID": "index.html#todays-guesses",
     "href": "index.html#todays-guesses",
-    "title": "World Cup Betting Game",
+    "title": "Familie Zumbrunn WM Tippspiel",
     "section": "Today’s guesses",
     "text": "Today’s guesses\n\n\nNo matches with predictions for today yet."
   },
   {
     "objectID": "index.html#leaderboard",
     "href": "index.html#leaderboard",
-    "title": "World Cup Betting Game",
+    "title": "Familie Zumbrunn WM Tippspiel",
     "section": "Leaderboard",
     "text": "Leaderboard"
   },
   {
     "objectID": "index.html#points-race-over-time",
     "href": "index.html#points-race-over-time",
-    "title": "World Cup Betting Game",
+    "title": "Familie Zumbrunn WM Tippspiel",
     "section": "Points race over time",
     "text": "Points race over time\nUse the dropdown to switch between all groups and a single group. Click player names in the legend to show or hide players."
-  },
-  {
-    "objectID": "rules.html",
-    "href": "rules.html",
-    "title": "Rules",
-    "section": "",
-    "text": "Exact score: 5 points\nCorrect goal difference: 3 points\nCorrect outcome only: 2 points\nWrong outcome: 0 points\n\nPredictions must be submitted before kickoff."
-  },
-  {
-    "objectID": "rules.html#scoring",
-    "href": "rules.html#scoring",
-    "title": "Rules",
-    "section": "",
-    "text": "Exact score: 5 points\nCorrect goal difference: 3 points\nCorrect outcome only: 2 points\nWrong outcome: 0 points\n\nPredictions must be submitted before kickoff."
   }
 ]

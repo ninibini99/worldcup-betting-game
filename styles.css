@@ -1,15 +1,268 @@
-.hero {
-  padding: 1.4rem 1.6rem;
-  border-radius: 18px;
-  background: linear-gradient(135deg, #f7fafc, #eef7ef);
-  border: 1px solid #e6e6e6;
-  margin-bottom: 1.5rem;
+/* =========================
+   World Cup Betting Site
+   2026-inspired theme
+   ========================= */
+
+:root {
+  --wc-black: #111111;
+  --wc-charcoal: #222222;
+  --wc-white: #ffffff;
+  --wc-offwhite: #f7f4ef;
+  --wc-gold: #c9a227;
+  --wc-green: #0b6b3a;
+  --wc-green-dark: #064225;
+  --wc-blue: #1f4e9d;
+  --wc-red: #d92d20;
+  --wc-sky: #eaf2ff;
+  --wc-card: rgba(255, 255, 255, 0.94);
+  --wc-text: #151515;
 }
 
-.hero h1 {
-  margin-top: 0;
+/* Page background */
+body {
+  background:
+    radial-gradient(circle at top left, rgba(31, 78, 157, 0.14), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(217, 45, 32, 0.10), transparent 30%),
+    linear-gradient(180deg, #ffffff 0%, var(--wc-offwhite) 100%);
+  color: var(--wc-text);
 }
 
-.reactable {
-  font-size: 0.95rem;
+/* Navbar: more 2026 black/white/gold */
+.navbar {
+  background: linear-gradient(90deg, var(--wc-black), var(--wc-charcoal)) !important;
+  border-bottom: 3px solid var(--wc-gold);
 }
+
+.navbar-title,
+.navbar-nav .nav-link {
+  color: white !important;
+  font-weight: 800;
+}
+
+.navbar-nav .nav-link:hover {
+  color: var(--wc-gold) !important;
+}
+
+/* Search icon */
+.aa-DetachedSearchButtonIcon {
+  color: white !important;
+}
+
+/* Main title */
+h1 {
+  color: var(--wc-black);
+  font-weight: 900;
+  letter-spacing: -0.6px;
+}
+
+h1::before {
+  content: "⚽ ";
+}
+
+/* Section titles */
+h2 {
+  color: var(--wc-charcoal);
+  font-weight: 850;
+  border-left: 7px solid var(--wc-blue);
+  padding-left: 0.65rem;
+  margin-top: 2rem;
+}
+
+h3 {
+  color: var(--wc-green-dark);
+  font-weight: 750;
+}
+
+/* Links */
+a {
+  color: var(--wc-blue);
+  font-weight: 650;
+}
+
+a:hover {
+  color: var(--wc-red);
+}
+
+/* Hero card */
+.wc-hero {
+  background:
+    linear-gradient(135deg, rgba(17, 17, 17, 0.94), rgba(6, 66, 37, 0.92)),
+    radial-gradient(circle at top right, rgba(201, 162, 39, 0.35), transparent 28%),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255,255,255,0.045),
+      rgba(255,255,255,0.045) 2px,
+      transparent 2px,
+      transparent 42px
+    );
+  color: white;
+  border-radius: 26px;
+  padding: 2.2rem;
+  margin-bottom: 1.8rem;
+  box-shadow: 0 18px 42px rgba(0,0,0,0.18);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-bottom: 5px solid var(--wc-gold);
+}
+
+.wc-hero h1,
+.wc-hero h2,
+.wc-hero h3 {
+  color: white;
+  border-left: none;
+  padding-left: 0;
+}
+
+.wc-hero h1::before {
+  content: "";
+}
+
+.wc-hero .subtitle {
+  color: #f3ead1;
+  font-size: 1.15rem;
+  max-width: 850px;
+}
+
+/* Pills/badges */
+.badge-football {
+  display: inline-block;
+  background: white;
+  color: var(--wc-black);
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  font-weight: 850;
+  margin-right: 0.35rem;
+  margin-bottom: 0.45rem;
+  border: 2px solid rgba(201, 162, 39, 0.8);
+  box-shadow: 0 3px 0 rgba(201, 162, 39, 0.75);
+  text-decoration: none;
+transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.badge-football:hover {
+  transform: translateY(-2px);
+  background: #f7f4ef;
+  color: var(--wc-black);
+  box-shadow: 0 5px 0 rgba(201, 162, 39, 0.9);
+  text-decoration: none;
+}
+
+/* Leaderboard callout */
+.leader-highlight {
+  background: linear-gradient(90deg, #ffffff, #f2f6ff);
+  border-left: 7px solid var(--wc-red);
+  padding: 0.85rem 1rem;
+  border-radius: 16px;
+  font-weight: 750;
+  margin-bottom: 1rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+}
+
+/* Cards / dashboard panels */
+.card,
+.quarto-dashboard .card,
+.panel-tabset,
+.callout {
+  border-radius: 20px !important;
+  border: 1px solid rgba(17, 17, 17, 0.10) !important;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.075);
+  background: var(--wc-card);
+}
+
+/* Tables */
+table {
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+thead {
+  background: var(--wc-black);
+  color: white;
+}
+
+tbody tr:nth-child(even) {
+  background: #f5f7fb;
+}
+
+tbody tr:hover {
+  background: #eef4ff;
+}
+
+/* DataTables */
+.dataTables_wrapper {
+  background: white;
+  padding: 1rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.065);
+}
+
+.dataTables_filter input,
+.dataTables_length select {
+  border-radius: 12px;
+  border: 1px solid rgba(17, 17, 17, 0.20);
+  padding: 0.35rem 0.55rem;
+}
+
+/* Buttons and pagination */
+.page-item.active .page-link {
+  background-color: var(--wc-black);
+  border-color: var(--wc-black);
+}
+
+.page-link {
+  color: var(--wc-blue);
+}
+
+/* Plot containers */
+.plotly,
+.html-widget {
+  border-radius: 20px;
+}
+
+/* TOC / On this page */
+.sidebar nav[role="doc-toc"] ul > li > a.active,
+.sidebar nav[role="doc-toc"] ul > li > a:hover {
+  color: var(--wc-blue) !important;
+  border-left-color: var(--wc-blue) !important;
+}
+
+/* Footer */
+.footer {
+  border-top: 3px solid var(--wc-gold);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .navbar-title {
+    font-size: 1rem;
+  }
+
+  .navbar-nav .nav-link {
+    font-size: 0.95rem;
+  }
+
+  .wc-hero {
+    padding: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .wc-hero .subtitle {
+    font-size: 1rem;
+  }
+
+  .badge-football {
+    display: block;
+    width: fit-content;
+    margin-bottom: 0.65rem;
+  }
+
+  .dataTables_wrapper {
+    overflow-x: auto;
+  }
+
+  table {
+    font-size: 0.9rem;
+  }
+}
+
+

@@ -1,6 +1,12 @@
 project:
   type: website
   output-dir: docs
+  render:
+    - index.qmd
+    - leaderboard.qmd
+    - previous-guesses.qmd
+    - predictions.qmd
+    - rules.qmd
 
 website:
   title: "Family World Cup Betting Game"
@@ -10,10 +16,6 @@ website:
         text: Home
       - href: leaderboard.qmd
         text: Leaderboard
-      - href: matches.qmd
-        text: Matches
-      - href: predictions.qmd
-        text: All Predictions
       - href: previous-guesses.qmd
         text: Previous Guesses
       - href: rules.qmd

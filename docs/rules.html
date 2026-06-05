@@ -98,14 +98,6 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Leaderboard</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./matches.html"> 
-<span class="menu-text">Matches</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./predictions.html"> 
-<span class="menu-text">All Predictions</span></a>
-  </li>  
-  <li class="nav-item">
     <a class="nav-link" href="./previous-guesses.html"> 
 <span class="menu-text">Previous Guesses</span></a>
   </li>  
@@ -129,7 +121,7 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#scoring" id="toc-scoring" class="nav-link active" data-scroll-target="#scoring">Scoring</a></li>
+  <li><a href="#scoring-rules-round-1-group-stage" id="toc-scoring-rules-round-1-group-stage" class="nav-link active" data-scroll-target="#scoring-rules-round-1-group-stage">Scoring rules — Round 1 / Group stage</a></li>
   </ul>
 </nav>
     </div>
@@ -155,15 +147,41 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="scoring" class="level2">
-<h2 class="anchored" data-anchor-id="scoring">Scoring</h2>
+<section id="scoring-rules-round-1-group-stage" class="level2">
+<h2 class="anchored" data-anchor-id="scoring-rules-round-1-group-stage">Scoring rules — Round 1 / Group stage</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Prediction result</th>
+<th style="text-align: right;">Points</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Exact score</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td>Correct goal difference</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td>Correct winner / correct outcome</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td>Wrong outcome</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p>Examples:</p>
 <ul>
-<li>Exact score: <strong>5 points</strong></li>
-<li>Correct goal difference: <strong>3 points</strong></li>
-<li>Correct outcome only: <strong>2 points</strong></li>
-<li>Wrong outcome: <strong>0 points</strong></li>
+<li>Prediction: 2–1, actual result: 2–1 → 3 points</li>
+<li>Prediction: 2–1, actual result: 3–2 → 2 points</li>
+<li>Prediction: 1–0, actual result: 2–0 → 1 point</li>
+<li>Prediction: 2–0, actual result: 1–1 → 0 points</li>
 </ul>
-<p>Predictions must be submitted before kickoff.</p>
 
 
 </section>

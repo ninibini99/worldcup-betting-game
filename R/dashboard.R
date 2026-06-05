@@ -2,6 +2,25 @@ library(dplyr)
 library(tidyr)
 library(plotly)
 library(reactable)
+library(stringr)
+
+official_players <- readr::read_csv(
+  "data/players.csv",
+  show_col_types = FALSE
+)$player
+
+clean_player_name <- function(x) {
+  x <- stringr::str_squish(x)
+  
+  dplyr::case_when(
+    stringr::str_to_lower(x) == "nina" ~ "Nina",
+    stringr::str_to_lower(x) == "saoirse" ~ "Saoirse",
+    stringr::str_to_lower(x) == "stefan" ~ "Stefan",
+    stringr::str_to_lower(x) == "luki" ~ "Luki",
+    stringr::str_to_lower(x) == "charlotte" ~ "Charlotte",
+    TRUE ~ x
+  )
+}
 
 prepare_match_view <- function(fixtures, results) {
   fixtures |>
@@ -21,47 +40,137 @@ prepare_prediction_view <- function(predictions, fixtures, results = NULL) {
     left_join(fixtures, by = "match_id") |>
     mutate(
       match_date = as.Date(date),
-      match = paste0(home_team_de, " vs ", away_team_de),
+      match = paste0(home_team, " vs ", away_team),
       prediction = paste0(pred_home_goals, "–", pred_away_goals)
     )
-
+  
   if (!is.null(results)) {
     out <- out |>
-      left_join(results, by = "match_id") |>
-      mutate(
-        actual_score = case_when(
-          status == "FINISHED" ~ paste0(home_goals, "–", away_goals),
-          TRUE ~ ""
-        )
-      )
+      left_join(results, by = "match_id")
   }
-
+  
   out
 }
 
-current_day_guesses <- function(predictions, fixtures, results, day = Sys.Date()) {
-  prepare_prediction_view(predictions, fixtures, results) |>
-    filter(match_date == day) |>
-    arrange(match_date, match_id, player) |>
-    select(
-      group, match_id, match, player, prediction,
-      status, actual_score, submitted_at
-    )
+current_day_guesses <- function(predictions, fixtures, results = NULL) {
+  today <- Sys.Date()
+  
+  empty_today <- tibble::tibble(
+    player = character(),
+    group = character(),
+    match = character(),
+    prediction = character(),
+    result = character(),
+    status = character()
+  )
+  
+  out <- prepare_prediction_view(predictions, fixtures, results) |>
+    dplyr::filter(match_date == today)
+  
+  if (nrow(out) == 0) {
+    return(empty_today)
+  }
+  
+  if (all(c("home_goals", "away_goals") %in% names(out))) {
+    out <- out |>
+      dplyr::mutate(
+        result = dplyr::if_else(
+          is.na(home_goals) | is.na(away_goals),
+          "",
+          paste0(home_goals, "–", away_goals)
+        )
+      )
+  } else {
+    out <- out |>
+      dplyr::mutate(result = "")
+  }
+  
+  if (!"status" %in% names(out)) {
+    out <- out |>
+      dplyr::mutate(status = "")
+  }
+  
+  out |>
+    dplyr::select(
+      player,
+      group,
+      match,
+      prediction,
+      result,
+      status
+    ) |>
+    dplyr::arrange(match, player)
 }
 
-previous_guesses <- function(predictions, fixtures, results, scores, day = Sys.Date()) {
-  prepare_prediction_view(predictions, fixtures, results) |>
-    left_join(
-      scores |>
-        select(player, match_id, points, reason),
-      by = c("player", "match_id")
+previous_guesses <- function(predictions, fixtures, results = NULL, scores = NULL) {
+  today <- Sys.Date()
+  
+  empty_previous <- tibble::tibble(
+    player = character(),
+    group = character(),
+    match = character(),
+    prediction = character(),
+    result = character(),
+    points = numeric(),
+    reason = character()
+  )
+  
+  out <- prepare_prediction_view(predictions, fixtures, results)
+  
+  # If there is no status column yet, create a blank one
+  if (!"status" %in% names(out)) {
+    out <- out |>
+      dplyr::mutate(status = "")
+  }
+  
+  # Add result display if result columns exist
+  if (all(c("home_goals", "away_goals") %in% names(out))) {
+    out <- out |>
+      dplyr::mutate(
+        result = dplyr::if_else(
+          is.na(home_goals) | is.na(away_goals),
+          "",
+          paste0(home_goals, "–", away_goals)
+        )
+      )
+  } else {
+    out <- out |>
+      dplyr::mutate(result = "")
+  }
+  
+  # Attach scores if available
+  if (!is.null(scores) && all(c("player", "match_id", "points", "reason") %in% names(scores))) {
+    out <- out |>
+      dplyr::left_join(
+        scores |> dplyr::select(player, match_id, points, reason),
+        by = c("player", "match_id")
+      )
+  } else {
+    out <- out |>
+      dplyr::mutate(
+        points = NA_real_,
+        reason = ""
+      )
+  }
+  
+  out <- out |>
+    dplyr::filter(status == "FINISHED" | match_date < today)
+  
+  if (nrow(out) == 0) {
+    return(empty_previous)
+  }
+  
+  out |>
+    dplyr::select(
+      player,
+      group,
+      match,
+      prediction,
+      result,
+      points,
+      reason
     ) |>
-    filter(status == "FINISHED" | match_date < day) |>
-    arrange(desc(match_date), match_id, player) |>
-    select(
-      match_date, group, match_id, match, player,
-      prediction, actual_score, points, reason, submitted_at
-    )
+    dplyr::arrange(dplyr::desc(match_date), match, player)
 }
 
 build_points_race_data <- function(scores, fixtures) {
@@ -150,5 +259,35 @@ points_race_plot <- function(scores, fixtures) {
         )
       ),
       margin = list(t = 90, b = 90)
+    )
+}
+
+get_today_guesses <- function(predictions, fixtures, results) {
+  today <- Sys.Date()
+  current_time <- lubridate::now()
+  reveal_time <- lubridate::as_datetime(paste(today, "08:00:00"))
+  
+  if (current_time < reveal_time) {
+    return(tibble::tibble(
+      message = "Today's guesses will be revealed at 08:00."
+    ))
+  }
+  
+  predictions |>
+    dplyr::mutate(player = clean_player_name(player)) |>
+    dplyr::filter(player %in% official_players) |>
+    dplyr::left_join(fixtures, by = "match_id") |>
+    dplyr::left_join(results, by = "match_id") |>
+    dplyr::filter(as.Date(date) == today) |>
+    dplyr::select(
+      player,
+      group,
+      home_team,
+      away_team,
+      pred_home_goals,
+      pred_away_goals,
+      status,
+      home_goals,
+      away_goals
     )
 }
