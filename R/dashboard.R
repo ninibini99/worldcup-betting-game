@@ -161,6 +161,7 @@ previous_guesses <- function(predictions, fixtures, results = NULL, scores = NUL
   }
   
   out |>
+    dplyr::arrange(dplyr::desc(match_date), match, player) |>
     dplyr::select(
       player,
       group,
@@ -169,8 +170,7 @@ previous_guesses <- function(predictions, fixtures, results = NULL, scores = NUL
       result,
       points,
       reason
-    ) |>
-    dplyr::arrange(dplyr::desc(match_date), match, player)
+    )
 }
 
 build_points_race_data <- function(scores, fixtures) {
