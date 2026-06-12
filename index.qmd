@@ -32,25 +32,26 @@ Und die grosse Frage: holt sich Nina auch hier den Titel?
 ## Today's guesses
 
 ```{r}
-if (nrow(todays_guesses) == 0) {
-  htmltools::tags$p("No matches with predictions for today yet.")
+#| output: asis
+todays_list <- current_day_guesses(predictions, fixtures, results)
+
+if (length(todays_list) == 0) {
+  cat("*No matches with predictions for today yet.*\n")
 } else {
-  reactable::reactable(
-    todays_guesses,
-    searchable = TRUE,
-    filterable = TRUE,
-    defaultPageSize = 12,
-    bordered = TRUE,
-    striped = TRUE,
-    columns = list(
-      player     = reactable::colDef(name = "Player"),
-      group      = reactable::colDef(name = "Group",  maxWidth = 80),
-      match      = reactable::colDef(name = "Match"),
-      prediction = reactable::colDef(name = "Guess",  maxWidth = 90),
-      result     = reactable::colDef(name = "Result", maxWidth = 90),
-      status     = reactable::colDef(name = "Status")
-    )
-  )
+  for (m in todays_list) {
+    status_label <- if (!is.null(m$status) && m$status == "FINISHED") {
+      paste0(" — **", m$result, "**")
+    } else {
+      ""
+    }
+    cat(paste0("### ", m$match, " (Group ", m$group, ")", status_label, "\n\n"))
+    tbl <- m$guesses
+    cat("| Player | Guess |\n|--------|-------|\n")
+    for (i in seq_len(nrow(tbl))) {
+      cat(paste0("| ", tbl$player[i], " | ", tbl$prediction[i], " |\n"))
+    }
+    cat("\n")
+  }
 }
 ```
 
