@@ -42,6 +42,11 @@ jobs:
       - name: Render Quarto site
         run: quarto render
 
+      - name: Update match results
+        run: Rscript R/update_results.R
+        env:
+          FOOTBALL_API_KEY: ${{ secrets.FOOTBALL_API_KEY }}
+
       - name: Commit rendered docs
         run: |
           git config user.name "github-actions[bot]"
