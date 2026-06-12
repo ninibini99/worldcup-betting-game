@@ -43,14 +43,12 @@ if (nrow(todays_guesses) == 0) {
     bordered = TRUE,
     striped = TRUE,
     columns = list(
-      group = reactable::colDef(name = "Group", maxWidth = 90),
-      match_id = reactable::colDef(name = "Game", maxWidth = 90),
-      match = reactable::colDef(name = "Match"),
-      player = reactable::colDef(name = "Player"),
-      prediction = reactable::colDef(name = "Guess", maxWidth = 90),
-      status = reactable::colDef(name = "Status"),
-      actual_score = reactable::colDef(name = "Result", maxWidth = 90),
-      submitted_at = reactable::colDef(name = "Submitted")
+      player     = reactable::colDef(name = "Player"),
+      group      = reactable::colDef(name = "Group",  maxWidth = 80),
+      match      = reactable::colDef(name = "Match"),
+      prediction = reactable::colDef(name = "Guess",  maxWidth = 90),
+      result     = reactable::colDef(name = "Result", maxWidth = 90),
+      status     = reactable::colDef(name = "Status")
     )
   )
 }
