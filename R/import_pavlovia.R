@@ -3,7 +3,7 @@ library(dplyr)
 library(tidyr)
 library(stringr)
 
-official_players <- c("Nina", "Saoirse", "Stefan", "Luki", "Charlotte")
+official_players <- c("Nina", "Saoirse", "Stefan", "Luki", "Charlotte", "Susanne")
 
 clean_player_name <- function(x) {
   x <- stringr::str_squish(x)
