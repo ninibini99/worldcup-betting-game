@@ -55,9 +55,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git reset --soft origin/main
           git add docs .nojekyll data/predictions.csv data/results.csv
-          git stash
-          git pull --rebase origin main
-          git stash pop
           git diff --cached --quiet || git commit -m "Render site"
-          git push
+          git push origin main
