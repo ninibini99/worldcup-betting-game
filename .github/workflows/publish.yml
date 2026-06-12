@@ -1,12 +1,10 @@
 name: Render and publish Quarto site
-
 on:
   push:
     branches: [main]
   schedule:
     - cron: "0 */3 * * *"
   workflow_dispatch:
-
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
@@ -21,10 +19,16 @@ jobs:
 
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
 
       - name: Install R packages
         run: |
-          install.packages(c("tidyverse", "plotly", "reactable", "htmltools"), repos = "https://cloud.r-project.org")
+          install.packages(c(
+            "rmarkdown", "knitr",
+            "tidyverse", "plotly", "reactable", "htmltools",
+            "readr", "dplyr", "stringr", "lubridate", "DT"
+          ), repos = "https://cloud.r-project.org")
         shell: Rscript {0}
 
       - name: Render Quarto site
