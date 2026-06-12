@@ -38,6 +38,10 @@ jobs:
             lubridate
             DT
             httr2
+            purrr
+
+      - name: Import Pavlovia predictions
+        run: Rscript R/import_pavlovia.R
 
       - name: Render Quarto site
         run: quarto render
