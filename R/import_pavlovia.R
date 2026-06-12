@@ -1,164 +1,108 @@
-library(tidyverse)
 library(readr)
+library(dplyr)
+library(tidyr)
 library(stringr)
-library(lubridate)
 
-# Official player names
 official_players <- c("Nina", "Saoirse", "Stefan", "Luki", "Charlotte")
 
 clean_player_name <- function(x) {
-  x <- str_squish(as.character(x))
-  
-  case_when(
-    str_to_lower(x) == "nina" ~ "Nina",
-    str_to_lower(x) == "saoirse" ~ "Saoirse",
-    str_to_lower(x) == "stefan" ~ "Stefan",
-    str_to_lower(x) == "luki" ~ "Luki",
-    str_to_lower(x) == "charlotte" ~ "Charlotte",
+  x <- stringr::str_squish(x)
+  dplyr::case_when(
+    stringr::str_to_lower(x) == "nina"      ~ "Nina",
+    stringr::str_to_lower(x) == "saoirse"   ~ "Saoirse",
+    stringr::str_to_lower(x) == "stefan"    ~ "Stefan",
+    stringr::str_to_lower(x) == "luki"      ~ "Luki",
+    stringr::str_to_lower(x) == "charlotte" ~ "Charlotte",
     TRUE ~ x
   )
 }
 
-# Read fixture table
-fixtures <- read_csv("data/fixtures.csv", show_col_types = FALSE)
+# Read all CSVs from data/raw/pavlovia/
+csv_files <- list.files("data/raw/pavlovia", pattern = "\\.csv$", full.names = TRUE)
 
-# This script expects fixtures.csv to contain:
-# match_id, home_code, away_code
-#
-# Example:
-# A1,MEX,RSA
-# A2,CZE,KOR
+if (length(csv_files) == 0) {
+  message("No CSV files found in data/raw/pavlovia/")
+  quit(status = 0)
+}
 
-required_fixture_cols <- c("match_id", "home_code", "away_code")
+raw <- purrr::map_dfr(csv_files, function(f) {
+  readr::read_csv(f, show_col_types = FALSE) |>
+    dplyr::mutate(source_file = basename(f))
+})
 
-missing_fixture_cols <- setdiff(required_fixture_cols, names(fixtures))
+# Keep only complete responses
+if ("isComplete" %in% names(raw)) {
+  raw <- raw |> dplyr::filter(isComplete == TRUE)
+}
 
-if (length(missing_fixture_cols) > 0) {
-  stop(
-    "fixtures.csv is missing these required columns: ",
-    paste(missing_fixture_cols, collapse = ", "),
-    "\nPlease add match_id, home_code, and away_code to data/fixtures.csv."
+# Extract player name and submitted time
+raw <- raw |>
+  dplyr::mutate(
+    player       = clean_player_name(`block_1/Name`),
+    submitted_at = as.POSIXct(responseDate)
   )
-}
 
-# Find Pavlovia CSV files
-pavlovia_files <- list.files(
-  "data/raw/pavlovia",
-  pattern = "\\.csv$",
-  full.names = TRUE
-)
+# Load fixtures for join
+fixtures <- readr::read_csv("data/fixtures.csv", show_col_types = FALSE)
 
-if (length(pavlovia_files) == 0) {
-  message("No Pavlovia files found. Keeping existing data/predictions.csv unchanged.")
-  quit(save = "no", status = 0)
-}
+# Pivot prediction columns only (exclude block_1/Name and bonus columns)
+prediction_cols <- names(raw) |>
+  stringr::str_subset("^block_1/") |>
+  setdiff(c("block_1/Name")) |>
+  # Only keep columns that match pattern block_1/XX_YYY (match + team code)
+  stringr::str_subset("^block_1/[A-L][0-9]_[A-Z]{2,3}$")
 
-read_one_pavlovia_file <- function(path) {
-  raw <- read_csv(path, show_col_types = FALSE)
-  
-  if (!"block_1/Name" %in% names(raw)) {
-    stop("Could not find column block_1/Name in: ", path)
-  }
-  
-  if (!"responseDate" %in% names(raw)) {
-    stop("Could not find column responseDate in: ", path)
-  }
-  
-  # Keep only completed responses if the column exists
-  if ("isComplete" %in% names(raw)) {
-    raw <- raw |>
-      filter(isComplete == TRUE | isComplete == "true" | isComplete == "TRUE" | isComplete == 1)
-  }
-  
-  # Convert wide Pavlovia columns to long format
-  long <- raw |>
-    mutate(
-      player = clean_player_name(`block_1/Name`),
-      submitted_at = responseDate,
-      source_file = basename(path)
-    ) |>
-    filter(player %in% official_players) |>
-    select(
-      player,
-      submitted_at,
-      source_file,
-      starts_with("block_1/")
-    ) |>
-    select(
-      -`block_1/Name`
-    ) |>
-    pivot_longer(
-      cols = starts_with("block_1/"),
-      names_to = "question",
-      values_to = "goals",
-      values_transform = list(goals = as.character)
-    ) |>
-    mutate(
-      question_clean = str_remove(question, "^block_1/"),
-      match_id = str_extract(question_clean, "^[A-L][0-9]+"),
-      team_code = str_extract(question_clean, "(?<=_)[A-Z]{3}$"),
-      goals = suppressWarnings(as.integer(goals))
-    ) |>
-    filter(!is.na(match_id), !is.na(team_code), !is.na(goals))
-  
-  long
-}
+long <- raw |>
+  dplyr::select(player, submitted_at, source_file, all_of(prediction_cols)) |>
+  tidyr::pivot_longer(
+    cols            = all_of(prediction_cols),
+    names_to        = "question",
+    values_to       = "goals",
+    values_transform = list(goals = as.character)
+  ) |>
+  dplyr::mutate(
+    # Remove block_1/ prefix
+    question  = stringr::str_remove(question, "^block_1/"),
+    # Split into match_id (e.g. A1) and team_code (e.g. MEX)
+    match_id  = stringr::str_extract(question, "^[A-L][0-9]"),
+    team_code = stringr::str_extract(question, "[A-Z]{2,3}$"),
+    goals     = suppressWarnings(as.integer(goals))
+  ) |>
+  dplyr::filter(!is.na(goals))
 
-pavlovia_long <- map_dfr(pavlovia_files, read_one_pavlovia_file)
-
-# Join with fixtures to identify home and away teams
-home_preds <- pavlovia_long |>
-  inner_join(
-    fixtures |> select(match_id, home_code),
+# Pivot wide: one row per player + match with home and away goals
+predictions <- long |>
+  dplyr::left_join(
+    fixtures |> dplyr::select(match_id, home_code, away_code),
     by = "match_id"
   ) |>
-  filter(team_code == home_code) |>
-  transmute(
-    player,
-    match_id,
-    submitted_at,
-    source_file,
-    pred_home_goals = goals
-  )
-
-away_preds <- pavlovia_long |>
-  inner_join(
-    fixtures |> select(match_id, away_code),
-    by = "match_id"
+  dplyr::mutate(
+    side = dplyr::case_when(
+      team_code == home_code ~ "pred_home_goals",
+      team_code == away_code ~ "pred_away_goals",
+      TRUE ~ NA_character_
+    )
   ) |>
-  filter(team_code == away_code) |>
-  transmute(
-    player,
-    match_id,
-    submitted_at,
-    source_file,
-    pred_away_goals = goals
-  )
-
-predictions <- home_preds |>
-  inner_join(
-    away_preds,
-    by = c("player", "match_id", "submitted_at", "source_file")
+  dplyr::filter(!is.na(side)) |>
+  tidyr::pivot_wider(
+    id_cols     = c(player, match_id, submitted_at, source_file),
+    names_from  = side,
+    values_from = goals
   ) |>
-  arrange(player, match_id)
+  dplyr::filter(!is.na(pred_home_goals), !is.na(pred_away_goals))
 
-# If someone submits multiple times, keep their latest submission per match
+# Keep only official players
 predictions <- predictions |>
-  mutate(submitted_at_parsed = suppressWarnings(ymd_hms(submitted_at))) |>
-  group_by(player, match_id) |>
-  arrange(desc(submitted_at_parsed), .by_group = TRUE) |>
-  slice(1) |>
-  ungroup() |>
-  select(
-    player,
-    match_id,
-    pred_home_goals,
-    pred_away_goals,
-    submitted_at
-  ) |>
-  arrange(match_id, player)
+  dplyr::filter(player %in% official_players)
 
-write_csv(predictions, "data/predictions.csv")
+# If someone submitted multiple times, keep the latest
+predictions <- predictions |>
+  dplyr::arrange(dplyr::desc(submitted_at)) |>
+  dplyr::distinct(player, match_id, .keep_all = TRUE)
 
-message("Imported Pavlovia predictions: ", nrow(predictions), " rows")
-message("Written to data/predictions.csv")
+# Final column selection
+predictions <- predictions |>
+  dplyr::select(player, match_id, pred_home_goals, pred_away_goals, submitted_at)
+
+readr::write_csv(predictions, "data/predictions.csv")
+message("Wrote ", nrow(predictions), " predictions to data/predictions.csv")
