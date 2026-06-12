@@ -43,13 +43,13 @@ jobs:
       - name: Import Pavlovia predictions
         run: Rscript R/import_pavlovia.R
 
-      - name: Render Quarto site
-        run: quarto render
-
       - name: Update match results
         run: Rscript R/update_results.R
         env:
           FOOTBALL_API_KEY: ${{ secrets.FOOTBALL_API_KEY }}
+
+      - name: Render Quarto site
+        run: quarto render
 
       - name: Commit rendered docs
         run: |
