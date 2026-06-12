@@ -54,52 +54,44 @@ prepare_prediction_view <- function(predictions, fixtures, results = NULL) {
 
 current_day_guesses <- function(predictions, fixtures, results = NULL) {
   today <- Sys.Date()
-  
-  empty_today <- tibble::tibble(
-    player = character(),
-    group = character(),
-    match = character(),
-    prediction = character(),
-    result = character(),
-    status = character()
-  )
-  
+
   out <- prepare_prediction_view(predictions, fixtures, results) |>
     dplyr::filter(match_date == today)
-  
+
   if (nrow(out) == 0) {
-    return(empty_today)
+    return(list())
   }
-  
+
   if (all(c("home_goals", "away_goals") %in% names(out))) {
     out <- out |>
       dplyr::mutate(
         result = dplyr::if_else(
           is.na(home_goals) | is.na(away_goals),
-          "",
+          "–",
           paste0(home_goals, "–", away_goals)
         )
       )
   } else {
-    out <- out |>
-      dplyr::mutate(result = "")
+    out <- out |> dplyr::mutate(result = "–")
   }
-  
+
   if (!"status" %in% names(out)) {
-    out <- out |>
-      dplyr::mutate(status = "")
+    out <- out |> dplyr::mutate(status = "scheduled")
   }
-  
-  out |>
-    dplyr::select(
-      player,
-      group,
-      match,
-      prediction,
-      result,
-      status
-    ) |>
-    dplyr::arrange(match, player)
+
+  # Return a list of per-match data frames
+  matches <- unique(out$match_id)
+  lapply(matches, function(mid) {
+    m <- out |> dplyr::filter(match_id == mid)
+    list(
+      match_id = mid,
+      group    = m$group[1],
+      match    = m$match[1],
+      result   = m$result[1],
+      status   = m$status[1],
+      guesses  = m |> dplyr::select(player, prediction) |> dplyr::arrange(player)
+    )
+  })
 }
 
 previous_guesses <- function(predictions, fixtures, results = NULL, scores = NULL) {
