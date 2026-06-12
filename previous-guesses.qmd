@@ -28,16 +28,13 @@ if (nrow(prev) == 0) {
     bordered = TRUE,
     striped = TRUE,
     columns = list(
-      match_date = reactable::colDef(name = "Date"),
-      group = reactable::colDef(name = "Group", maxWidth = 90),
-      match_id = reactable::colDef(name = "Game", maxWidth = 90),
-      match = reactable::colDef(name = "Match"),
-      player = reactable::colDef(name = "Player"),
-      prediction = reactable::colDef(name = "Guess", maxWidth = 90),
-      actual_score = reactable::colDef(name = "Result", maxWidth = 90),
-      points = reactable::colDef(name = "Points", maxWidth = 90),
-      reason = reactable::colDef(name = "Reason"),
-      submitted_at = reactable::colDef(name = "Submitted")
+      player     = reactable::colDef(name = "Player"),
+      group      = reactable::colDef(name = "Group",  maxWidth = 80),
+      match      = reactable::colDef(name = "Match"),
+      prediction = reactable::colDef(name = "Guess",  maxWidth = 90),
+      result     = reactable::colDef(name = "Result", maxWidth = 90),
+      points     = reactable::colDef(name = "Points", maxWidth = 80),
+      reason     = reactable::colDef(name = "Reason")
     )
   )
 }
