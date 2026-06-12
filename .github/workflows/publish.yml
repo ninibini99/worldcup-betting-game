@@ -37,6 +37,7 @@ jobs:
             stringr
             lubridate
             DT
+            httr2
 
       - name: Render Quarto site
         run: quarto render
