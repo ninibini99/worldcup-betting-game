@@ -171,36 +171,28 @@ build_points_race_data <- function(scores, fixtures) {
     mutate(match_date = as.Date(date)) |>
     filter(!is.na(match_date))
 
-  # Sum points per player per date before cumulating
   all_scope <- scored_matches |>
-    group_by(player, match_date) |>
-    summarise(daily_points = sum(points, na.rm = TRUE), .groups = "drop") |>
-    arrange(player, match_date) |>
+    arrange(match_date, match_id) |>
     group_by(player) |>
-    mutate(
-      running_points = cumsum(daily_points),
-      scope = "All groups"
-    ) |>
-    ungroup()
+    mutate(running_points = cumsum(points)) |>
+    ungroup() |>
+    mutate(scope = "All groups")
 
   group_scope <- scored_matches |>
-    group_by(player, group, match_date) |>
-    summarise(daily_points = sum(points, na.rm = TRUE), .groups = "drop") |>
-    arrange(player, group, match_date) |>
+    arrange(group, match_date, match_id) |>
     group_by(player, group) |>
-    mutate(
-      running_points = cumsum(daily_points),
-      scope = paste("Group", group)
-    ) |>
-    ungroup()
+    mutate(running_points = cumsum(points)) |>
+    ungroup() |>
+    mutate(scope = paste("Group", group))
 
   bind_rows(all_scope, group_scope) |>
     mutate(
       hover = paste0(
         "<b>", player, "</b>",
-        "<br>Date: ", match_date,
-        "<br>Points today: ", daily_points,
-        "<br>Total: ", running_points,
+        "<br>Match: ", match_id,
+        "<br>Group: ", group,
+        "<br>Points this match: ", points,
+        "<br>Total in view: ", running_points,
         "<extra></extra>"
       )
     )
