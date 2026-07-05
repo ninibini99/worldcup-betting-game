@@ -43,5 +43,23 @@ results <- matches |>
   dplyr::filter(!is.na(match_id)) |>
   dplyr::select(match_id, home_goals, away_goals, status, updated_at)
 
-readr::write_csv(results, "data/results.csv")
-message("Updated results.csv with ", nrow(results), " matches.")
+# Load existing results
+existing <- readr::read_csv("data/results.csv", show_col_types = FALSE)
+
+# Only update matches that are currently SCHEDULED in our file
+scheduled_ids <- existing |>
+  dplyr::filter(status == "SCHEDULED") |>
+  dplyr::pull(match_id)
+
+# Only keep API results for scheduled matches
+new_results <- results |>
+  dplyr::filter(match_id %in% scheduled_ids)
+
+# Merge: keep existing finished matches, add new results
+final_results <- existing |>
+  dplyr::filter(!match_id %in% new_results$match_id) |>
+  dplyr::bind_rows(new_results) |>
+  dplyr::arrange(match_id)
+
+readr::write_csv(final_results, "data/results.csv")
+message("Updated results.csv with ", nrow(new_results), " new matches.")
