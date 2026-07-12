@@ -49,7 +49,7 @@ fixtures <- readr::read_csv("data/fixtures.csv", show_col_types = FALSE)
 prediction_cols <- names(raw) |>
   stringr::str_subset("^block_1/") |>
   setdiff(c("block_1/Name", "block_1/WC_Winner", "block_1/question1")) |>
-  stringr::str_subset("^block_1/([A-L][0-9]|R32_[0-9]+|R16_[0-9]+|QF_[0-9]+|SF_[0-9]+)_[A-Z]{2,3}$")
+  stringr::str_subset("^block_1/([A-L][0-9]|R32_[0-9]+|R16_[0-9]+|QF_[0-9]+)_[A-Z]{2,3}$")
 
 long <- raw |>
   dplyr::select(player, submitted_at, source_file, all_of(prediction_cols)) |>
@@ -63,7 +63,7 @@ long <- raw |>
     # Remove block_1/ prefix
     question  = stringr::str_remove(question, "^block_1/"),
     # Split into match_id (e.g. A1) and team_code (e.g. MEX)
-    match_id = stringr::str_extract(question, "^(?:[A-L][0-9]|R32_[0-9]+|R16_[0-9]+|QF_[0-9]+|SF_[0-9]+)"),
+    match_id  = stringr::str_extract(question, "^(?:[A-L][0-9]|R32_[0-9]+|R16_[0-9]+|QF_[0-9]+)"),,
     team_code = stringr::str_extract(question, "[A-Z]{2,3}$"),
     goals     = suppressWarnings(as.integer(goals))
   ) |>
