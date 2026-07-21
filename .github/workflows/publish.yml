@@ -48,6 +48,9 @@ jobs:
         env:
           FOOTBALL_API_KEY: ${{ secrets.FOOTBALL_API_KEY }}
 
+      - name: Score bonus questions
+        run: Rscript R/score_bonus.R
+
       - name: Render Quarto site
         run: quarto render
 
